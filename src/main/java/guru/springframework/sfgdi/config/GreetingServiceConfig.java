@@ -2,6 +2,7 @@ package guru.springframework.sfgdi.config;
 
 import com.springframework.pets.PetService;
 import com.springframework.pets.PetServiceFactory;
+import guru.springframework.sfgdi.datasource.FakeDataSource;
 import guru.springframework.sfgdi.repositories.EnglishGreetingRepository;
 import guru.springframework.sfgdi.repositories.EnglishGreetingRepositoryImpl;
 import guru.springframework.sfgdi.services.ConstructorGreetingService;
@@ -10,13 +11,49 @@ import guru.springframework.sfgdi.services.I18nSpanishGreetingService;
 import guru.springframework.sfgdi.services.PrimaryGreetingService;
 import guru.springframework.sfgdi.services.PropertyGreetingService;
 import guru.springframework.sfgdi.services.SetterGreetingService;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 
+@EnableConfigurationProperties(SfgConstructorConfig.class)
 @Configuration
 public class GreetingServiceConfig {
+
+//@Bean
+//FakeDataSource fakeDataSource(@Value("${guru.username}") String username,
+//                              @Value("${guru.password}") String password,
+//                              @Value("${guru.jdbcurl}") String jdbcurl) {
+//
+//    FakeDataSource fakeDataSource = new FakeDataSource();
+//    fakeDataSource.setUsername(username);
+//    fakeDataSource.setPassword(password);
+//    fakeDataSource.setJdbcurl(jdbcurl);
+//    return fakeDataSource;
+//}
+
+//second way
+//@Bean
+//FakeDataSource fakeDataSource(SfgConfiguration sfgConfiguration) {
+//
+//    FakeDataSource fakeDataSource = new FakeDataSource();
+//    fakeDataSource.setUsername(sfgConfiguration.getUsername());
+//    fakeDataSource.setPassword(sfgConfiguration.getPassword());
+//    fakeDataSource.setJdbcurl(sfgConfiguration.getJdbcurl());
+//    return fakeDataSource;
+//}
+
+//third way
+@Bean
+FakeDataSource fakeDataSource(SfgConstructorConfig sfgConstructorConfig) {
+
+    FakeDataSource fakeDataSource = new FakeDataSource();
+    fakeDataSource.setUsername(sfgConstructorConfig.getUsername());
+    fakeDataSource.setPassword(sfgConstructorConfig.getPassword());
+    fakeDataSource.setJdbcurl(sfgConstructorConfig.getJdbcurl());
+    return fakeDataSource;
+}
 
 @Bean
 PetServiceFactory petServiceFactory() {
